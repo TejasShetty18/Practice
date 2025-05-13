@@ -1,6 +1,6 @@
 function Status() {
   return (
-    <footer>
+    <footer className="stats">
       <em>
         🧳 you have X items in your list and you have already packed x(x%)
       </em>
