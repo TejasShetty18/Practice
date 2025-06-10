@@ -1,28 +1,27 @@
 import React from "react";
+import Navbar from "./components/Navbar";
+import Hero from "./components/Hero";
+import HomeCard from "./components/HomeCard";
+import JobListings from "./components/jobListings";
+import ViewAllJobs from "./components/ViewAllJobs";
 
-function App() {
-  const name = "Tejas Shetty";
-  const x = 10;
-  const y = 20;
-  const names = ["raj", "tej", "ram"];
-
+const App = () => {
   return (
     <>
-      <div className="text-5xl font-bold underline">App</div>
-      <br></br>
-      <p>Hello {name}</p>
-        <br></br>
-      <p>
-        the sun of {x} and {y} is {x + y}
-      </p>
-        <br></br>
-      <ul>
-        {names.map((name, index) => (
-          <li key={index}>{name}</li>
-        ))}
-      </ul>
+      <Navbar />
+
+      {/* <!-- Hero --> */}
+      <Hero title={"testing title"} para={"testing para"} />
+
+      {/* <!-- Developers and Employers --> */}
+      <HomeCard />
+
+      {/* <!-- Browse Jobs --> */}
+      <JobListings />
+
+      <ViewAllJobs />
     </>
   );
-}
+};
 
 export default App;
