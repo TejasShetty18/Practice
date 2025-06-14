@@ -13,9 +13,7 @@ const JobListings = ({ isHome = false }) => {
 
   const fetchJobs = async () => {
     try {
-      const apiUrl = isHome
-        ? "http://localhost:8000/jobs?_limit=3"
-        : "http://localhost:8000/jobs";
+      const apiUrl = isHome ? "/api/jobs?_limit=3" : "/api/jobs";
 
       const res = await fetch(apiUrl);
       console.log("res data", res);
