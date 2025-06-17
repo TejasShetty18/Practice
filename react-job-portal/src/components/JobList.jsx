@@ -3,10 +3,12 @@ import { FaMapMarker } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const JobList = ({ job }) => {
+  console.log("Jobs are: ", job);
   const [showFullScreenDescription, setShowFullScreenDescription] =
     useState(false);
 
   let description = job.description;
+  console.log("desc: ", description);
 
   if (!showFullScreenDescription) {
     description = description.substring(0, 90) + "...";

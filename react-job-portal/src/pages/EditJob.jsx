@@ -1,40 +1,50 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import {toast} from "react-toastify";
+import { useLoaderData, useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
-const AddJobPage = ({ addJobSubmit }) => {
-  const [type, setType] = useState("Full-Time");
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [salary, setSalary] = useState("Under $50K");
-  const [location, setLocation] = useState("");
-  const [companyName, setCompanyName] = useState("");
-  const [companyDescription, setCompanyDescription] = useState("");
-  const [contactEmail, setContactEmail] = useState("");
-  const [contactPhone, setContactPhone] = useState("");
+const EditJob = ({updateJobSubmit}) => {
+  const job = useLoaderData();
+  const { id } = useParams();
   const navigate = useNavigate();
+
+//   console.log("editing jobs are: ", job);
+//   console.log("jobs are: ", job.company);
+//   console.log("1 jobs are: ", job.company.name);
+
+  const [editData, setEditData] = useState({
+    type: job.type,
+    title: job.title,
+    description: job.description,
+    salary: job.salary,
+    location: job.location,
+    companyName: job.company.name,
+    companyDescription: job.company.description,
+    contactEmail: job.company.contactEmail,
+    contactPhone: job.company.contactPhone,
+  });
 
   const submitForm = (e) => {
     e.preventDefault();
 
-    const newJob = {
-      title,
-      type,
-      description,
-      salary,
-      location,
+    const UpdateJOb = {
+      id: id,
+      title: editData.title,
+      type: editData.type,
+      description: editData.description,
+      salary: editData.salary,
+      location: editData.location,
       company: {
-        name: companyName,
-        description: companyDescription,
-        contactEmail,
-        contactPhone,
+        name: editData.companyName,
+        description: editData.companyDescription,
+        contactEmail: editData.contactEmail,
+        contactPhone: editData.contactPhone,
       },
     };
 
-    addJobSubmit(newJob);
-    toast.success("Job Added Successfully");
+    updateJobSubmit(UpdateJOb);
+    toast.success("Job Updated Successfully");
 
-    return navigate("/jobs");
+    return navigate(`/jobs/${id}`);
   };
 
   return (
@@ -42,7 +52,9 @@ const AddJobPage = ({ addJobSubmit }) => {
       <div className="container m-auto max-w-2xl py-24">
         <div className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
           <form onSubmit={submitForm}>
-            <h2 className="text-3xl text-center font-semibold mb-6">Add Job</h2>
+            <h2 className="text-3xl text-center font-semibold mb-6">
+              Edit Job
+            </h2>
 
             <div className="mb-4">
               <label
@@ -56,8 +68,10 @@ const AddJobPage = ({ addJobSubmit }) => {
                 name="type"
                 className="border rounded w-full py-2 px-3"
                 required
-                value={type}
-                onChange={(e) => setType(e.target.value)}
+                value={editData.type}
+                onChange={(e) =>
+                  setEditData((prev) => ({ ...prev, type: e.target.value }))
+                }
               >
                 <option value="Full-Time">Full-Time</option>
                 <option value="Part-Time">Part-Time</option>
@@ -77,8 +91,10 @@ const AddJobPage = ({ addJobSubmit }) => {
                 className="border rounded w-full py-2 px-3 mb-2"
                 placeholder="eg. Beautiful Apartment In Miami"
                 required
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                value={editData.title}
+                onChange={(e) =>
+                  setEditData((prev) => ({ ...prev, title: e.target.value }))
+                }
               />
             </div>
             <div className="mb-4">
@@ -94,8 +110,13 @@ const AddJobPage = ({ addJobSubmit }) => {
                 className="border rounded w-full py-2 px-3"
                 rows="4"
                 placeholder="Add any job duties, expectations, requirements, etc"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                value={editData.description}
+                onChange={(e) =>
+                  setEditData((prev) => ({
+                    ...prev,
+                    description: e.target.value,
+                  }))
+                }
               ></textarea>
             </div>
 
@@ -111,8 +132,10 @@ const AddJobPage = ({ addJobSubmit }) => {
                 name="salary"
                 className="border rounded w-full py-2 px-3"
                 required
-                value={salary}
-                onChange={(e) => setSalary(e.target.value)}
+                value={editData.salary}
+                onChange={(e) =>
+                  setEditData((prev) => ({ ...prev, salary: e.target.value }))
+                }
               >
                 <option value="Under $50K">Under $50K</option>
                 <option value="$50K - 60K">$50K - $60K</option>
@@ -139,8 +162,10 @@ const AddJobPage = ({ addJobSubmit }) => {
                 className="border rounded w-full py-2 px-3 mb-2"
                 placeholder="Company Location"
                 required
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
+                value={editData.location}
+                onChange={(e) =>
+                  setEditData((prev) => ({ ...prev, location: e.target.value }))
+                }
               />
             </div>
 
@@ -159,8 +184,13 @@ const AddJobPage = ({ addJobSubmit }) => {
                 name="company"
                 className="border rounded w-full py-2 px-3"
                 placeholder="Company Name"
-                value={companyName}
-                onChange={(e) => setCompanyName(e.target.value)}
+                value={editData.companyName}
+                onChange={(e) =>
+                  setEditData((prev) => ({
+                    ...prev,
+                    companyName: e.target.value,
+                  }))
+                }
               />
             </div>
 
@@ -177,8 +207,13 @@ const AddJobPage = ({ addJobSubmit }) => {
                 className="border rounded w-full py-2 px-3"
                 rows="4"
                 placeholder="What does your company do?"
-                value={companyDescription}
-                onChange={(e) => setCompanyDescription(e.target.value)}
+                value={editData.companyDescription}
+                onChange={(e) =>
+                  setEditData((prev) => ({
+                    ...prev,
+                    companyDescription: e.target.value,
+                  }))
+                }
               ></textarea>
             </div>
 
@@ -196,8 +231,13 @@ const AddJobPage = ({ addJobSubmit }) => {
                 className="border rounded w-full py-2 px-3"
                 placeholder="Email address for applicants"
                 required
-                value={contactEmail}
-                onChange={(e) => setContactEmail(e.target.value)}
+                value={editData.contactEmail}
+                onChange={(e) =>
+                  setEditData((prev) => ({
+                    ...prev,
+                    contactEmail: e.target.value,
+                  }))
+                }
               />
             </div>
             <div className="mb-4">
@@ -213,8 +253,13 @@ const AddJobPage = ({ addJobSubmit }) => {
                 name="contact_phone"
                 className="border rounded w-full py-2 px-3"
                 placeholder="Optional phone for applicants"
-                value={contactPhone}
-                onChange={(e) => setContactPhone(e.target.value)}
+                value={editData.contactPhone}
+                onChange={(e) =>
+                  setEditData((prev) => ({
+                    ...prev,
+                    contactPhone: e.target.value,
+                  }))
+                }
               />
             </div>
 
@@ -223,7 +268,7 @@ const AddJobPage = ({ addJobSubmit }) => {
                 className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
                 type="submit"
               >
-                Add Job
+                Edit Job
               </button>
             </div>
           </form>
@@ -233,4 +278,4 @@ const AddJobPage = ({ addJobSubmit }) => {
   );
 };
 
-export default AddJobPage;
+export default EditJob;
